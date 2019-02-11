@@ -18,7 +18,7 @@ function getIP(){
 
 }
 
-theIP = JSON.parse(fs.readFileSync('./ip.json')).ip;
+theIP = JSON.parse(fs.readFileSync(settings.outputFile || './ip.json')).ip;
 
 setInterval(() => {
   
@@ -36,7 +36,7 @@ setInterval(() => {
         
         theIP = ip;
         
-        fs.writeFileSync(settings.outputFile, '{"ip": "' + theIP + '"}');
+        fs.writeFileSync(settings.outputFile || './ip.json', '{"ip": "' + theIP + '"}');
       });
     
     } else {
