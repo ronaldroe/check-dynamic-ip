@@ -1,20 +1,17 @@
 const axios = require('axios');
 const fs = require('fs');
-const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+
+const settings = require('./settings.json');
+
+console.log(settings);
 
 console.log('Script started');
 
-const oneDay = 1000 * 60 * 60 * 24;
+
 
 let theIP;
 
 function getIP(){
-
-  // return JSDOM.fromURL('http://www.ip4.me/', {includeNodeLocations: true})
-  // .then(res => {
-  //   return res.window.document.querySelector('body > center > table > tbody > tr:nth-child(2) > td > font').innerHTML;
-  // });
 
   return axios.get('https://api.ipify.org?format=json')
   .then(res => res.data.ip);
@@ -31,7 +28,7 @@ setInterval(() => {
     
     if(ip !== theIP){
       
-      axios.post('https://hooks.zapier.com/hooks/catch/2581951/xjrw88/', {
+      axios.post(settings.endpoint, {
         ip: ip
       })
       .then(res => {
@@ -39,7 +36,7 @@ setInterval(() => {
         
         theIP = ip;
         
-        fs.writeFileSync('./ip.json', '{"ip": "' + theIP + '"}');
+        fs.writeFileSync(settings.outputFile, '{"ip": "' + theIP + '"}');
       });
     
     } else {
@@ -48,4 +45,4 @@ setInterval(() => {
   
   });
 
-}, 5000);
+}, settings.interval || (86400000 / 2));

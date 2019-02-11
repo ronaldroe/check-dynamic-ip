@@ -1,0 +1,5 @@
+{
+  "outputFile": "./ip.json",
+  "endpoint": "http://api.example.com",
+  "interval": 43200000
+}
